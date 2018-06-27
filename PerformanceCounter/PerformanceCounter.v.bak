@@ -1,0 +1,56 @@
+  module PerformanceCounter ( 
+clk,
+ readdata,
+ write,
+ read,
+ address,
+ byteenable,
+ writedata,
+ chipselect);
+input  clk;
+input  write;
+input  read;
+input [2:0] address;
+input [3:0] byteenable;
+input [31:0] writedata;
+input  chipselect;
+output [31:0] readdata;
+
+  wire  gnd_346;
+  wire  and_out_331;
+  wire  or_out_348;
+  wire  vcc_344;
+  wire  and_out_333;
+  wire  and_out_329;
+  wire [63:0] mux_out_342;
+  wire  and_out_335;
+  wire  or_out_338;
+  wire  inv_out_327;
+  wire [63:0] VerilogWire_337;
+
+  Not_w1 Noti328 ( address[0], inv_out_327);
+
+  And2_w1 Andi330 ( and_out_329, inv_out_327, chipselect);
+
+  And2_w1 Andi332 ( and_out_331, address[0], chipselect);
+
+  And2_w1 Andi334 ( and_out_333, and_out_329, write);
+
+  And2_w1 Andi336 ( and_out_335, and_out_331, write);
+
+  Or2_w1 Ori339 ( or_out_338, and_out_335, and_out_333);
+
+  mux_2to1_w64_ws1 Muxi343 ( mux_out_342, and_out_335, {writedata[31],writedata[30],writedata[29],writedata[28],writedata[27],writedata[26],writedata[25],writedata[24],writedata[23],writedata[22],writedata[21],writedata[20],writedata[19],writedata[18],writedata[17],writedata[16],writedata[15],writedata[14],writedata[13],writedata[12],writedata[11],writedata[10],writedata[9],writedata[8],writedata[7],writedata[6],writedata[5],writedata[4],writedata[3],writedata[2],writedata[1],writedata[0],VerilogWire_337[31],VerilogWire_337[30],VerilogWire_337[29],VerilogWire_337[28],VerilogWire_337[27],VerilogWire_337[26],VerilogWire_337[25],VerilogWire_337[24],VerilogWire_337[23],VerilogWire_337[22],VerilogWire_337[21],VerilogWire_337[20],VerilogWire_337[19],VerilogWire_337[18],VerilogWire_337[17],VerilogWire_337[16],VerilogWire_337[15],VerilogWire_337[14],VerilogWire_337[13],VerilogWire_337[12],VerilogWire_337[11],VerilogWire_337[10],VerilogWire_337[9],VerilogWire_337[8],VerilogWire_337[7],VerilogWire_337[6],VerilogWire_337[5],VerilogWire_337[4],VerilogWire_337[3],VerilogWire_337[2],VerilogWire_337[1],VerilogWire_337[0]}, {VerilogWire_337[63],VerilogWire_337[62],VerilogWire_337[61],VerilogWire_337[60],VerilogWire_337[59],VerilogWire_337[58],VerilogWire_337[57],VerilogWire_337[56],VerilogWire_337[55],VerilogWire_337[54],VerilogWire_337[53],VerilogWire_337[52],VerilogWire_337[51],VerilogWire_337[50],VerilogWire_337[49],VerilogWire_337[48],VerilogWire_337[47],VerilogWire_337[46],VerilogWire_337[45],VerilogWire_337[44],VerilogWire_337[43],VerilogWire_337[42],VerilogWire_337[41],VerilogWire_337[40],VerilogWire_337[39],VerilogWire_337[38],VerilogWire_337[37],VerilogWire_337[36],VerilogWire_337[35],VerilogWire_337[34],VerilogWire_337[33],VerilogWire_337[32],writedata[31],writedata[30],writedata[29],writedata[28],writedata[27],writedata[26],writedata[25],writedata[24],writedata[23],writedata[22],writedata[21],writedata[20],writedata[19],writedata[18],writedata[17],writedata[16],writedata[15],writedata[14],writedata[13],writedata[12],writedata[11],writedata[10],writedata[9],writedata[8],writedata[7],writedata[6],writedata[5],writedata[4],writedata[3],writedata[2],writedata[1],writedata[0]});
+
+  Vcc_w1 Vcci345 ( vcc_344);
+
+  Gnd_w1 Gndi347 ( gnd_346);
+
+  Or3_w1 Ori349 ( or_out_348, or_out_338, gnd_346, vcc_344);
+
+  upDownCounter_i350 upDownCounteri350 ( clk, VerilogWire_337, or_out_348, vcc_344, mux_out_342, or_out_338);
+
+  mux_2to1_w32_ws1 Muxi365 ( readdata, and_out_331, {VerilogWire_337[63],VerilogWire_337[62],VerilogWire_337[61],VerilogWire_337[60],VerilogWire_337[59],VerilogWire_337[58],VerilogWire_337[57],VerilogWire_337[56],VerilogWire_337[55],VerilogWire_337[54],VerilogWire_337[53],VerilogWire_337[52],VerilogWire_337[51],VerilogWire_337[50],VerilogWire_337[49],VerilogWire_337[48],VerilogWire_337[47],VerilogWire_337[46],VerilogWire_337[45],VerilogWire_337[44],VerilogWire_337[43],VerilogWire_337[42],VerilogWire_337[41],VerilogWire_337[40],VerilogWire_337[39],VerilogWire_337[38],VerilogWire_337[37],VerilogWire_337[36],VerilogWire_337[35],VerilogWire_337[34],VerilogWire_337[33],VerilogWire_337[32]}, {VerilogWire_337[31],VerilogWire_337[30],VerilogWire_337[29],VerilogWire_337[28],VerilogWire_337[27],VerilogWire_337[26],VerilogWire_337[25],VerilogWire_337[24],VerilogWire_337[23],VerilogWire_337[22],VerilogWire_337[21],VerilogWire_337[20],VerilogWire_337[19],VerilogWire_337[18],VerilogWire_337[17],VerilogWire_337[16],VerilogWire_337[15],VerilogWire_337[14],VerilogWire_337[13],VerilogWire_337[12],VerilogWire_337[11],VerilogWire_337[10],VerilogWire_337[9],VerilogWire_337[8],VerilogWire_337[7],VerilogWire_337[6],VerilogWire_337[5],VerilogWire_337[4],VerilogWire_337[3],VerilogWire_337[2],VerilogWire_337[1],VerilogWire_337[0]});
+
+
+endmodule
