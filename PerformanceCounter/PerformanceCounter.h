@@ -11,6 +11,9 @@ typedef unsigned long long uint64;
 #define INT64_DEFINED
 #endif
 
+#ifdef NIOS2_CPU_FREQ
+#define PERFORMANCE_COUNTER_FREQ	NIOS2_CPU_FREQ
+#endif
 
 /**
  * Returns the high performance (64bit) counter value
