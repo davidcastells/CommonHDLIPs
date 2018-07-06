@@ -19,7 +19,7 @@ package require -exact qsys 16.1
 # module oc_i2c_master
 # 
 set_module_property DESCRIPTION ""
-set_module_property NAME oc_i2c_master
+set_module_property NAME I2CMaster
 set_module_property VERSION 1.0
 set_module_property INTERNAL false
 set_module_property OPAQUE_ADDRESS_MAP true
