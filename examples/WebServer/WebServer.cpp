@@ -69,7 +69,8 @@ int main(int argc, char** argv)
 {    
     int port = 8080;
     
-    printf("Web Server - Using Socket Channel (running in port %d)\n", port);
+    printf("Minimal C/C++ WebServer")
+    printf("Using TCP Socket Channel (running in port %d)\n", port);
     
     int listenfd = 0, connfd = 0;
     struct sockaddr_in serv_addr; 
@@ -114,8 +115,8 @@ int main(int argc, char** argv)
         }
         
         struct timeval tv;
-        tv.tv_sec = 1;
-        tv.tv_usec = 0;
+        tv.tv_sec = 0;
+        tv.tv_usec = 100 * 1000;
         setsockopt(connfd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
         
         ticks = time(NULL);
