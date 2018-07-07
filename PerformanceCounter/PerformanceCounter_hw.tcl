@@ -20,7 +20,7 @@ package require -exact qsys 16.1
 # 
 set_module_property DESCRIPTION "A simple Performance 64bit Counter"
 set_module_property NAME PerformanceCounter
-set_module_property VERSION 1.0
+set_module_property VERSION 7.1
 set_module_property INTERNAL false
 set_module_property OPAQUE_ADDRESS_MAP true
 set_module_property GROUP "Avalon Slave"
