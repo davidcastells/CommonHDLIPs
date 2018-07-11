@@ -4,6 +4,7 @@ module vga_sync (
          vga_clk,
          reset_n,
         vga_start,      // Active when displaying frame
+		  memory_latency,
 
         // outputs:
          blank_n,
@@ -12,13 +13,15 @@ module vga_sync (
          sync_t,
          vsync,
          column_counter,
-         row_counter
+         row_counter,
+			display_active
       );  
 input vga_clk;
 input reset_n;
 input vga_start;
+input [7:0] memory_latency;
+
 output blank_n;
-reg blank_n;
 output 	hsync;
 reg 	hsync;
 output 	sync_n;
@@ -33,6 +36,8 @@ reg    [  9: 0] row_counter;         // max row = 2^9        =  512
 
 reg vactive;
 reg hactive;
+output display_active;
+reg display_active;
 
 // 640x480 @60 Hz data
 parameter MODE_H_DISPLAY = 640;
@@ -48,7 +53,6 @@ parameter MODE_V_SYNC_POLARITY = 0; // 0 means negative
 
 
   wire    [  2: 0] config_counter;
-  wire             display_active;
   reg              hblank;
   wire             stop_config_counter;
   reg              sync_n_init;
@@ -76,18 +80,15 @@ parameter MODE_V_SYNC_POLARITY = 0; // 0 means negative
             end
          else
             begin
-                if ((column_counter >= 0) && (column_counter < MODE_H_DISPLAY))
-                    hactive <= 1;
-                else 
+                if (column_counter == MODE_H_DISPLAY-2)
                     hactive <= 0;
 
-                if ((row_counter >= 0) && (row_counter < MODE_V_DISPLAY))
-                    vactive <= 1;
-                else
+                if (row_counter == MODE_V_DISPLAY-2)
                     vactive <= 0;
 
-                if ((column_counter >= (MODE_H_DISPLAY+MODE_H_FRONT_PORCH)) 
-                    && (column_counter < (MODE_H_DISPLAY+MODE_H_FRONT_PORCH+MODE_H_SYNC)))
+				    // delay hsync one clock 
+                if ((column_counter >= (MODE_H_DISPLAY+MODE_H_FRONT_PORCH+1+memory_latency)) 
+                    && (column_counter < (MODE_H_DISPLAY+MODE_H_FRONT_PORCH+MODE_H_SYNC+1+memory_latency)))
                     hsync <= 0;
                 else
                     hsync <= 1;
@@ -103,10 +104,13 @@ parameter MODE_V_SYNC_POLARITY = 0; // 0 means negative
                 else
                    begin
                       column_counter <= 0;
+		      hactive <= 1;
+							 
                      if ((row_counter < (MODE_V_DISPLAY+MODE_V_FRONT_PORCH+MODE_V_SYNC+MODE_V_BACK_PORCH)-1))
                         row_counter <= row_counter +1 ;
                      else
                         row_counter <= 0;
+								vactive <= 1;
                    end                
             end
     end
@@ -133,7 +137,14 @@ parameter MODE_V_SYNC_POLARITY = 0; // 0 means negative
 
 
 
-  assign display_active = hactive & vactive;
+
+  always @(posedge vga_clk or negedge reset_n)
+    begin
+      if (reset_n == 0)
+          display_active <= 0;
+      else 
+			display_active <= hactive & vactive;
+    end
 
 
   always @(posedge vga_clk or negedge reset_n)
@@ -154,13 +165,7 @@ parameter MODE_V_SYNC_POLARITY = 0; // 0 means negative
     end
 
 
-  always @(posedge vga_clk or negedge reset_n)
-    begin
-      if (reset_n == 0)
-          blank_n <= 0;
-      else 
-        blank_n <= display_active;
-    end
+assign blank_n = hactive & vactive;
 
 
 
