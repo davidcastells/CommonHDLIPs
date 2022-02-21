@@ -21,10 +21,10 @@ set_sw_property bsp_subdirectory drivers
 #
 
 # C/C++ source files
-add_sw_property c_source HAL/src/performanceCounter.c
+add_sw_property c_source HAL/src/PerformanceCounter.c
 
 # Include files
-add_sw_property include_source HAL/inc/performanceCounter.h
+add_sw_property include_source HAL/inc/PerformanceCounter.h
 
 
 # This driver supports HAL & UCOSII BSP (OS) types
